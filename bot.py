@@ -92,7 +92,7 @@ async def save_departure(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return ConversationHandler.END
     user_id = update.effective_user.id
     reason = update.message.text
-    timestamp = datetime.datetime.now()
+    timestamp = datetime.datetime.now(ZoneInfo("Europe/Moscow"))
     cursor.execute("INSERT INTO departures (user_id, reason, timestamp) VALUES (?, ?, ?)", (user_id, reason, timestamp))
     conn.commit()
     cursor.execute("SELECT full_name, department FROM users WHERE user_id = ?", (user_id,))
@@ -152,7 +152,7 @@ async def report_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     period = query.data
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(ZoneInfo("Europe/Moscow"))
 
     if period == "day":
         since = now.replace(hour=0, minute=0, second=0, microsecond=0)
