@@ -2,6 +2,7 @@ import os
 import threading
 import sqlite3
 import datetime
+from zoneinfo import ZoneInfo
 from flask import Flask
 from dotenv import load_dotenv
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
@@ -85,7 +86,7 @@ async def handle_departure(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return WAIT_REASON
 
 async def save_departure(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(ZoneInfo("Europe/Moscow"))
     if now.weekday() >= 5 or not (9 <= now.hour < 18):
         await update.message.reply_text("⏰ Вне рабочего времени — бот завершает работу.")
         return ConversationHandler.END
